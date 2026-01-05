@@ -31,7 +31,8 @@
   },
   "overrides": {
     "glob": "^10.3.10",
-    "rimraf": "^5.0.5"
+    "rimraf": "^5.0.5",
+    "read-package-json": "npm:@npmcli/package-json@^5.0.0"
   }
 }
 
