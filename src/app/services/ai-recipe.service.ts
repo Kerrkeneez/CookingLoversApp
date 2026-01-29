@@ -32,60 +32,66 @@ export class AIRecipeService {
   }
 
   generateRecipe(prompt: string): Observable<AIRecipeResponse> {
-    if (!this.apiKey) {
-      // Return a fallback recipe suggestion if no API key
-      return of(this.getFallbackRecipe(prompt));
-    }
-
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.apiKey}`
-    });
-
-    const systemPrompt = `You are a helpful cooking assistant. Generate a recipe based on the user's request. 
-    Return ONLY a valid JSON object with this exact structure (no markdown, no code blocks, just pure JSON):
-    {
-      "title": "Recipe Name",
-      "ingredients": ["ingredient 1", "ingredient 2", ...],
-      "steps": ["step 1", "step 2", ...]
-    }
-    Make sure the recipe is practical and the steps are clear.`;
-
-    const body = {
-      model: 'gpt-3.5-turbo',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: `Generate a recipe for: ${prompt}` }
-      ],
-      temperature: 0.7,
-      max_tokens: 1000
-    };
-
-    return this.http.post<any>(this.apiUrl, body, { headers }).pipe(
-      map(response => {
-        try {
-          const content = response.choices[0]?.message?.content || '';
-          // Try to extract JSON from the response (in case it's wrapped in markdown)
-          const jsonMatch = content.match(/\{[\s\S]*\}/);
-          const jsonStr = jsonMatch ? jsonMatch[0] : content;
-          const recipe = JSON.parse(jsonStr);
-          
-          return {
-            title: recipe.title || 'AI Generated Recipe',
-            ingredients: Array.isArray(recipe.ingredients) ? recipe.ingredients : [],
-            steps: Array.isArray(recipe.steps) ? recipe.steps : []
-          };
-        } catch (error) {
-          console.error('Error parsing AI response:', error);
-          return this.getFallbackRecipe(prompt);
-        }
-      }),
-      catchError(error => {
-        console.error('AI API Error:', error);
-        return of(this.getFallbackRecipe(prompt));
-      })
-    );
+    // Call your backend instead of OpenAI directly
+    return this.http.post<AIRecipeResponse>('http://localhost:3000/api/recipe', { prompt });
   }
+
+
+  // generateRecipe(prompt: string): Observable<AIRecipeResponse> {
+  //   if (!this.apiKey) {
+  //     // Return a fallback recipe suggestion if no API key
+  //     return of(this.getFallbackRecipe(prompt));
+  //   }
+
+  //   const headers = new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'Authorization': `Bearer ${this.apiKey}`
+  //   });
+
+  //   const systemPrompt = `You are a helpful cooking assistant. Generate a recipe based on the user's request. 
+  //   Return ONLY a valid JSON object with this exact structure (no markdown, no code blocks, just pure JSON):
+  //   {
+  //     "title": "Recipe Name",
+  //     "ingredients": ["ingredient 1", "ingredient 2", ...],
+  //     "steps": ["step 1", "step 2", ...]
+  //   }
+  //   Make sure the recipe is practical and the steps are clear.`;
+
+  //   const body = {
+  //     model: 'gpt-3.5-turbo',
+  //     messages: [
+  //       { role: 'system', content: systemPrompt },
+  //       { role: 'user', content: `Generate a recipe for: ${prompt}` }
+  //     ],
+  //     temperature: 0.7,
+  //     max_tokens: 1000
+  //   };
+
+  //   return this.http.post<any>(this.apiUrl, body, { headers }).pipe(
+  //     map(response => {
+  //       try {
+  //         const content = response.choices[0]?.message?.content || '';
+  //         // Try to extract JSON from the response (in case it's wrapped in markdown)
+  //         const jsonMatch = content.match(/\{[\s\S]*\}/);
+  //         const jsonStr = jsonMatch ? jsonMatch[0] : content;
+  //         const recipe = JSON.parse(jsonStr);
+          
+  //         return {
+  //           title: recipe.title || 'AI Generated Recipe',
+  //           ingredients: Array.isArray(recipe.ingredients) ? recipe.ingredients : [],
+  //           steps: Array.isArray(recipe.steps) ? recipe.steps : []
+  //         };
+  //       } catch (error) {
+  //         console.error('Error parsing AI response:', error);
+  //         return this.getFallbackRecipe(prompt);
+  //       }
+  //     }),
+  //     catchError(error => {
+  //       console.error('AI API Error:', error);
+  //       return of(this.getFallbackRecipe(prompt));
+  //     })
+  //   );
+  // }
 
   private getFallbackRecipe(prompt: string): AIRecipeResponse {
     // Fallback recipe suggestions when API is not available

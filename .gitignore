@@ -6,6 +6,11 @@
 /out-tsc
 /bazel-out
 
+# Backend
+/backend/dist
+/backend/node_modules
+/backend/.env
+
 # Node
 /node_modules
 npm-debug.log
@@ -27,6 +32,8 @@ yarn-error.log
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
+
+.vs/
 
 # Miscellaneous
 /.angular/cache
