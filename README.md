@@ -55,8 +55,9 @@ The frontend can run on its own (pure SPA in the browser) or talk to the backend
 
 ---
 
-## Project structure (high level)
+### Project Structure
 
+```text
 cooking-lovers-application/
 ├── src/
 │   ├── app/
@@ -67,16 +68,16 @@ cooking-lovers-application/
 │   │   ├── models/
 │   │   │   └── recipe.model.ts   # Recipe data model
 │   │   ├── services/
-│   │   │   ├── recipe.service.ts # Recipe CRUD and local storage
-│   │   │   └── ai-recipe.service.ts
-│   │   │                          # Recipe generation (backend/fallback)
-│   │   ├── app.component.*        # Root component + navigation
-│   │   └── app.routes.ts          # Client‑side routes
+│   │   │   ├── recipe.service.ts    # Recipe CRUD and local storage
+│   │   │   └── ai-recipe.service.ts # Recipe generation (backend/fallback)
+│   │   ├── app.component.* # Root component + navigation
+│   │   └── app.routes.ts         # Client‑side routes
 │   ├── index.html
-│   ├── main.ts                    # Angular entry point
+│   ├── main.ts                   # Angular entry point
 │   └── styles.css
 └── backend/
     ├── src/
-    │   └── index.ts               # Express server with /api/recipe endpoint
+    │   └── index.ts              # Express server with /api/recipe endpoint
     ├── package.json
     └── tsconfig.json
+```
