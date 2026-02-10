@@ -27,7 +27,7 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'cookinglovers-webapp'
+          app-name: '<YOUR-APP-SERVICE-NAME>'
           slot-name: 'production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           package: 'dist/cooking-lovers-application/browser'
