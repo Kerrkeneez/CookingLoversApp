@@ -30,4 +30,4 @@ jobs:
           app-name: 'cookinglovers-webapp'
           slot-name: 'production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-          package: 'dist/cooking-lovers-application'
+          package: 'dist/cooking-lovers-application/browser'
